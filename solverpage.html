@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>SSSSbyAlpxcx</title>
+	<script src="./SSwCMC.js"></script>
+	<script>
+		function solve(){
+			var s = document.getElementById('text').value.split("\n")
+  		var btime = new Date().getTime();
+  		for(var i=0;i < s.length;i++){
+  			if(s[i].length >=81){
+  				var sdArr = new Array;
+  				var tmp = s[i];
+  				for(var j=0,ti;j < 81;j++){
+  					ti = parseInt(tmp[j])
+  					if(isNaN(ti)){
+  						sdArr.push(0);
+  					}else{
+  						sdArr.push(ti);
+  					}
+  				}
+  				var spuzzle = new sudoku(3);
+  				spuzzle.init(sdArr);
+  				spuzzle.solve();
+  			}
+  		}
+  		console.log("Dev message: total runtime: "+((new Date().getTime()-btime)/1000)+" seconds");
+  		document.getElementById("resultpuzzle").innerHTML="";
+  		for(var k=0;k < 9;k++){
+  			for(var l=0;l < 9;l++){
+  				document.getElementById("resultpuzzle").innerHTML+=spuzzle.arr[k*9+l]+" ";
+  			}
+  			document.getElementById("resultpuzzle").innerHTML+="\n";
+  		}
+		}
+		function clr(){
+			document.getElementById("text").innerHTML="";
+			document.getElementById("resultpuzzle").innerHTML="";
+  		document.getElementById("resultpath").innerHTML="";
+		}
+	</script>
+</head>
+<body>
+	<h1>SSwCMC by Alpxcx</h1><br/>
+	Most of brute force algorithms copy the entire puzzle into the next step therefore ther are very memory-inefficient.<br/>
+	This is an example of a brute force algorithm which does not occupy extra memory when backtracking.
+	<br/>
+	Please enter the puzzle you wish to solve.<br/>
+	Format: 81 digits of numbers sorted by rows. You can use number 0 or dot for any vacancies.<br/>
+	Enter here:
+	<textarea rows="1" cols="85" id="text"></textarea><br/>
+	The final completed sudoku will show below. Click "Solve" to solve the puzzle.<input value="Solve" onclick="solve();" type="button"> <input value="Clear" onclick="clr();" type="button"><br/>
+	<textarea rows="10" cols="16" id="resultpuzzle"></textarea>
+</body>
+</html>
