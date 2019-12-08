@@ -31,11 +31,10 @@ function sudoku(size){
 			var r = this.ptor[i];
 			var c = this.ptoc[i];
 			var b = this.ptob[i];
+			this.arr[i]=arr[i];
 			this.oarr[i]=true;
 			this.fill(arr[i],r,c,b);
-			this.fc++;
 		}
-		this.arr = arr.concat();
 	}
 	this.fill = function(num,r,c,b){
 		var tbit = 1 << num;
@@ -52,35 +51,30 @@ function sudoku(size){
 		this.fc--;
 	}
 	this.solve = function(){
+		this.t=0;
 		mainfor:
-		for(var i=0,iter=1,tbit,r,c,b;i < this.gsiz;){
+		for(var i=0,iter=1,tbit,r,c,b,j;i < this.gsiz;this.t++,i+=iter){
 			if(i===-1) return false;
-			if(this.oarr[i]){i += iter;continue;}
+			if(this.oarr[i]) continue;
 			if(this.fc===this.gsiz) return true;
 			var r = this.ptor[i];
 			var c = this.ptoc[i];
 			var b = this.ptob[i];
 			tbit = this.rowinfo[r]|this.colinfo[c]|this.boxinfo[b];
-			if(tbit===this.ful){
-				this.unfill(this.arr[i],r,c,b);
-				this.arr[i] = 0;
-  			iter=-1;
-  			i--;
-				continue;
-			}
-			for(var j=this.arr[i]+1,cbit=1 << j;j <= this.ncnt;j++,cbit=cbit << 1){
+			if(tbit===this.ful) j = this.ncnt;
+			else j=this.arr[i];
+			for(var cbit;j < this.ncnt;){
+				cbit = 1 << ++j;
 				if(tbit&cbit) continue;
 				this.unfill(this.arr[i],r,c,b);
 				this.fill(j,r,c,b);
 				this.arr[i] = j;
 				iter=1;
-				i++;
 				continue mainfor;
 			}
 			this.unfill(this.arr[i],r,c,b);
-			this.arr[i] = 0;
+			this.arr[i] = 0;
 			iter=-1;
-			i--;
 		}
 	}
 }
